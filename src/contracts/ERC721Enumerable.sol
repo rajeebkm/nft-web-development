@@ -21,6 +21,7 @@ contract ERC721Enumerable is ERC721 {
     /// @return A count of valid NFTs tracked by this contract, where each one of
     ///  them has an assigned and queryable owner not equal to the zero address
     function totalSupply() external view returns (uint256){
+        //return the total supply of the _allTokens array
         return _allTokens.length;
     }
 
@@ -30,6 +31,8 @@ contract ERC721Enumerable is ERC721 {
     /// @return The token identifier for the `_index`th NFT,
     ///  (sort order not specified)
     function tokenByIndex(uint256 _index) external view returns (uint256){
+        require(_index < _allTokens.length, "global index is out of bounds!");
+        return _allTokens[_index];
 
     }
 
@@ -41,6 +44,9 @@ contract ERC721Enumerable is ERC721 {
     /// @return The token identifier for the `_index`th NFT assigned to `_owner`,
     ///   (sort order not specified)
     function tokenOfOwnerByIndex(address _owner, uint256 _index) external view returns (uint256){
+        //make sure the index is not out of bounds of the total supply
+        require(_index < balanceOf(_owner), "global index is out of bounds!");
+        return _ownedTokens[_owner][_index];
 
     }
 
@@ -49,13 +55,24 @@ contract ERC721Enumerable is ERC721 {
         // 2 things !
         // A. add tokens to the owner
         // B. add tokens to totalSupply - to allTokens
-        _addTokensToTotalSupply(tokenId);
+        _addTokensToAllTokenEnumeration(tokenId);
+        _addTokensToOwnerEnumeration(to, tokenId);
 
 
     }
 
-    function _addTokensToTotalSupply(uint256 tokenId) private {
+    // add tokens to the _allTokens array and set the position of the tokens indexes
+    function _addTokensToAllTokenEnumeration(uint256 tokenId) private {
+        _allTokensIndex[tokenId]= _allTokens.length;
         _allTokens.push(tokenId);
+    }
+
+    function _addTokensToOwnerEnumeration(address to, uint256 tokenId) private {
+        // 1. add address and tokenId to _ownedTokens
+        _ownedTokens[to].push(tokenId);
+        // 2. ownedTokensIndex tokenId set to address of ownedTokens position
+        _ownedTokensIndex[tokenId] = _ownedTokens[to].length;
+
     }
 
 }

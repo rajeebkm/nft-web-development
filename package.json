@@ -29,7 +29,12 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "development": "truffle deploy --reset --compile-none",
+    "rinkebydeploy": "truffle deploy --reset --network rinkeby --compile-none",
+    "rinkebyverify": "truffle run verify KryptoBirdz --network rinkeby",
+    "goerlideploy": "truffle deploy --reset --network goerli --compile-none",
+    "goerliverify": "truffle run verify KryptoBirdz --network goerli"
   },
   "eslintConfig": {
     "extends": "react-app"
