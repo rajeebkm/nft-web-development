@@ -109,3 +109,9 @@ BN { negative: 0, words: [ 3, <1 empty item> ], length: 1, red: null }
 
 
 
+ERC165 & NFT Contract Interface Support
+----------------------------------------
+
+The ERC165 Standard is just a way of checking if your contract's data match the data of any given interface.
+
+Every ERC-721 compliant contract must implement the ERC721 and ERC165 interfaces

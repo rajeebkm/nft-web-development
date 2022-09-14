@@ -2,7 +2,9 @@
 
 pragma solidity ^0.8.0;
 
-contract ERC721 {
+import "./ERC165.sol";
+
+contract ERC721 is ERC165 {
 
     // mapping in solidity creates a hash table of key pair values
     // mapping from token id to the owner
@@ -13,6 +15,7 @@ contract ERC721 {
     mapping(uint256 => address) private _tokenApprovals;
 
     event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
+    event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId);
 
     /// @notice Count all NFTs assigned to an owner
     /// @dev NFTs assigned to the zero address are considered invalid, and this
@@ -86,7 +89,32 @@ contract ERC721 {
     }
 
     function transferFrom(address _from, address _to, uint256 _tokenId) public {
+        require(isApprovedOrOwner(msg.sender, _tokenId));
         _transferFrom(_from, _to, _tokenId);
+    }
+
+    // require that the person approving is the owner
+    // require that we can't approve sending tokens of owner to the owner (current caller)
+    // we are approving an address to a tokenId, update the map of approval addresses
+    // emit event Approval
+    function approve(address _to, uint256 _tokenId) public {
+        address owner = _tokenOwner[_tokenId];
+        require(msg.sender == owner, "Current caller isn't the owner of the token");
+        require(_to != owner, "ERROR! Approval to current owner");
+        _tokenApprovals[_tokenId] = _to;
+        emit Approval(owner, _to, _tokenId);
+
+    }
+
+    function isApprovedOrOwner(address spender, uint256 _tokenId) internal view returns(bool){
+        require(_exists(_tokenId), "token doesn't exist");
+        address owner = ownerOf(_tokenId);
+        return (spender == owner || getApproved(_tokenId) == spender);
+
+    }
+
+    function getApproved(uint256 _tokenId) public view returns(address){
+        return _tokenApprovals[_tokenId];
     }
 
 
