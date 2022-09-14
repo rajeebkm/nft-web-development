@@ -15,15 +15,21 @@ For truffle tests and console please consult the official Truffle documentaion f
 
 Compile contracts
 -----------------
+```
 >> truffle compile
+
+```
 
 Deploy contracts
 ----------------
+```
 >> truffle migrate --reset --compile-none (if compiled already)
 >> truffle migrate --reset
+```
 
 Truffle Console
 ----------------
+```
 >> truffle(development)> kryptoBirdz = await KryptoBirdz.deployed()
 undefined
 >> truffle(development)> kryptoBirdz.name()
@@ -107,7 +113,7 @@ BN { negative: 0, words: [ 1, <1 empty item> ], length: 1, red: null }
 >> truffle(development)> kryptoBirdz.totalSupply()
 BN { negative: 0, words: [ 3, <1 empty item> ], length: 1, red: null }
 
-
+```
 
 ERC165 & NFT Contract Interface Support
 ----------------------------------------
