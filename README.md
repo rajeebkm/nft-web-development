@@ -1,5 +1,11 @@
 # nft-web-development
 
+<p align="center">
+  <a href="https://github.com/rajeebkm/nft-web-development" target="_blank">
+    <img src="./public/demfronted.png" width="620">
+  </a>
+</p>
+
 Please run ```npm install ``` on the terminal to download the appropriate packages already defined to the ```package.json``` file. 
 Make sure you are in the source file. 
 
