@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://github.com/rajeebkm/nft-web-development" target="_blank">
-    <img src="/public/demfronted.png" width="620">
+    <img src="/public/demofronted.png" width="620">
   </a>
 </p>
 
