@@ -3,8 +3,9 @@
 pragma solidity ^0.8.0;
 
 import "./ERC165.sol";
+import "./interfaces/IERC721.sol";
 
-contract ERC721 is ERC165 {
+contract ERC721 is ERC165, IERC721 {
 
     // mapping in solidity creates a hash table of key pair values
     // mapping from token id to the owner
@@ -14,15 +15,29 @@ contract ERC721 is ERC165 {
     // mapping from tokenId to approve addresses
     mapping(uint256 => address) private _tokenApprovals;
 
-    event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
-    event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId);
+    // event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
+    // event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId);
+
+    /*
+    1. Register the interface for the ERC721 contract so that it includes the following functions: balanceOf, ownerOf, transferFrom
+    // *note: by register the interface write the constructors with the according byte conversion
+
+    2. Register the interface for the ERC721Enumerable contract so that it includes the following functions: totalSupply, tokenByIndex, tokenOfOwnerByIndex
+
+    3. Register the interface for the ERC721Metadata contract so that it includes the following functions: name and symbol functions
+
+    */
+
+    constructor(){
+        _registerInterface(bytes4(keccak256('balanceOf(address)')^keccak256('ownerOf(uint256)')^keccak256('transferFrom(address,address,uint256)')));
+    }
 
     /// @notice Count all NFTs assigned to an owner
     /// @dev NFTs assigned to the zero address are considered invalid, and this
     ///  function throws for queries about the zero address.
     /// @param _owner An address for whom to query the balance
     /// @return The number of NFTs owned by `_owner`, possibly zero
-    function balanceOf(address _owner) public view returns (uint256){
+    function balanceOf(address _owner) public view override returns (uint256){
         require(_owner != address(0), "ERROR! owner query for non-existance token");
         return _ownedTokensCount[_owner];
     }
@@ -32,12 +47,10 @@ contract ERC721 is ERC165 {
     ///  about them do throw.
     /// @param _tokenId The identifier for an NFT
     /// @return The address of the owner of the NFT
-    function ownerOf(uint256 _tokenId) public view returns (address){
+    function ownerOf(uint256 _tokenId) public view override returns (address){
         address owner = _tokenOwner[_tokenId];
         require(owner != address(0), "ERROR! owner query for non-existance token");
-        return owner;
-
-        
+        return owner; 
     }
     
     function _exists(uint256 tokenId) internal view returns(bool){
@@ -88,7 +101,7 @@ contract ERC721 is ERC165 {
 
     }
 
-    function transferFrom(address _from, address _to, uint256 _tokenId) public {
+    function transferFrom(address _from, address _to, uint256 _tokenId) public override {
         require(isApprovedOrOwner(msg.sender, _tokenId));
         _transferFrom(_from, _to, _tokenId);
     }

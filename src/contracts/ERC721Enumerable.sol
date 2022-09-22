@@ -1,10 +1,10 @@
 //SPDX-License-Identifier: MIT
-
 pragma solidity ^0.8.0;
 
 import './ERC721.sol';
+import "./interfaces/IERC721Enumerable.sol";
 
-contract ERC721Enumerable is ERC721 {
+contract ERC721Enumerable is ERC721, IERC721Enumerableb {
 
     uint256[] private _allTokens;
 
@@ -17,10 +17,14 @@ contract ERC721Enumerable is ERC721 {
     // mapping from token ID to index of the owner tokens list
     mapping(uint256 => uint256) private _ownedTokensIndex;
 
+    constructor(){
+        _registerInterface(bytes4(keccak256('totalSupply()')^keccak256('tokenByIndex(uint256)')^keccak256('tokenOfOwnerByIndex(address,uint256)')));
+    }
+
     /// @notice Count NFTs tracked by this contract
     /// @return A count of valid NFTs tracked by this contract, where each one of
     ///  them has an assigned and queryable owner not equal to the zero address
-    function totalSupply() external view returns (uint256){
+    function totalSupply() public view override returns (uint256){
         //return the total supply of the _allTokens array
         return _allTokens.length;
     }
@@ -30,7 +34,7 @@ contract ERC721Enumerable is ERC721 {
     /// @param _index A counter less than `totalSupply()`
     /// @return The token identifier for the `_index`th NFT,
     ///  (sort order not specified)
-    function tokenByIndex(uint256 _index) external view returns (uint256){
+    function tokenByIndex(uint256 _index) public view override returns (uint256){
         require(_index < _allTokens.length, "global index is out of bounds!");
         return _allTokens[_index];
 
@@ -43,7 +47,7 @@ contract ERC721Enumerable is ERC721 {
     /// @param _index A counter less than `balanceOf(_owner)`
     /// @return The token identifier for the `_index`th NFT assigned to `_owner`,
     ///   (sort order not specified)
-    function tokenOfOwnerByIndex(address _owner, uint256 _index) external view returns (uint256){
+    function tokenOfOwnerByIndex(address _owner, uint256 _index) public view override returns (uint256){
         //make sure the index is not out of bounds of the total supply
         require(_index < balanceOf(_owner), "global index is out of bounds!");
         return _ownedTokens[_owner][_index];
