@@ -52,7 +52,7 @@ class App extends Component {
             // grab the totalSupply on the fronted and log the results
             const totalSupply = await contract.methods.totalSupply().call();
             this.setState({totalSupply});
-            console.log('Total Supply: ', totalSupply.toNumber());
+            // console.log('Total Supply: ', totalSupply.toNumber());
 
             // setup an array to keep track of tokens
             // load KryptoBirdz
@@ -63,7 +63,7 @@ class App extends Component {
                     kryptoBirdz: [...this.state.kryptoBirdz, KryptoBird] // spread operator for merge and update
                 })
             }
-            console.log(this.state.kryptoBirdz);
+            // console.log(this.state.kryptoBirdz);
 
         } else {
             console.log('Smart contract is not deployed');
