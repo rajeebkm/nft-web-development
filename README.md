@@ -285,7 +285,7 @@ mdbootstrap
 -----------
 Link: https://mdbootstrap.com/
 
-imgdb uploaded images links (https://imgbb.com/upload)
+imgbb uploaded images links (https://imgbb.com/upload)
 ---------------------------
 ```
 "https://i.ibb.co/R3M4y7W/k1.png"
